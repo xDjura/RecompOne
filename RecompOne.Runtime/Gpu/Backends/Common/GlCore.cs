@@ -1071,7 +1071,14 @@ public sealed class GlCore : IGpuBackend
             clipY0 = _kClipY0 - rt.Y;
             clipX1 = _kClipX1 - rt.X + rt.Margin;
             clipY1 = _kClipY1 - rt.Y;
-            if (rt.Margin > 0 && _kClipX0 <= rt.X && _kClipX1 >= rt.X + rt.W - 1)
+            var slack = GpuHle.MarginEdgeSlack;
+            if (rt.Margin > 0 && slack >= 0)
+            {
+                // per-edge margins (opt-in): a drawing area touching one display edge may spill into that margin
+                if (_kClipX0 <= rt.X + slack) clipX0 = 0;
+                if (_kClipX1 >= rt.X + rt.W - 1 - slack) clipX1 = rt.Wide1x - 1;
+            }
+            else if (rt.Margin > 0 && _kClipX0 <= rt.X && _kClipX1 >= rt.X + rt.W - 1)
             {
                 clipX0 = 0;
                 clipX1 = rt.Wide1x - 1;

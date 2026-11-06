@@ -8,6 +8,12 @@ public static class Display
         set => GpuHle.WideAspect = value;
     }
 
+    public static int MarginEdgeSlack
+    {
+        get => GpuHle.MarginEdgeSlack;
+        set => GpuHle.MarginEdgeSlack = value;
+    }
+
     public static float OutputAspect
     {
         get => GpuHle.OutputAspect;

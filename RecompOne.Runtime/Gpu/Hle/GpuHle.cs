@@ -6,6 +6,13 @@ public static class GpuHle
     public static IGpuBackend? Backend { get; set; }
 
     public static float WideAspect { get; set; }
+
+    // Widescreen margins per edge (opt-in, -1 = off). By default the margins only open when the drawing area
+    // covers the whole display, which leaves split-screen views (each clipped to its half) stuck in 4:3. When
+    // this is >= 0, the left margin opens for any drawing area whose left edge is within this many pixels of the
+    // display's left edge, and the right margin likewise, independently of each other.
+    public static int MarginEdgeSlack { get; set; } = -1;
+
     public static float OutputAspect { get; set; } = 4f / 3f;
 
     public static float SourceAspect { get; set; } = 4f / 3f;
