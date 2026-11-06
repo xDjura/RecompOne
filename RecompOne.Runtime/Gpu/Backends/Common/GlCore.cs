@@ -1307,11 +1307,12 @@ public sealed class GlCore : IGpuBackend
 
         Flush();
 
+        var hold = GpuHle.HoldDisplayRt;
         for (var i = 0; i < _rts.Length; i++)
         {
             if (_rts[i] is not { } rt) continue;
             if (rt.Dirty) Writeback(rt);
-            if (_frame - rt.LastDrawFrame > 300)
+            if (!hold && _frame - rt.LastDrawFrame > 300)
             {
                 rt.Destroy(_gl);
                 _rts[i] = null;
@@ -1322,7 +1323,7 @@ public sealed class GlCore : IGpuBackend
         if (!rgb24)
             foreach (var rt in _rts)
             {
-                if (rt == null || _frame - rt.LastDrawFrame > 4) continue;
+                if (rt == null || (!hold && _frame - rt.LastDrawFrame > 4)) continue;
                 if (dispX < rt.X || dispY < rt.Y || dispX + w > rt.X + rt.W || dispY + h > rt.Y + rt.H) continue;
                 if (src == null || rt.LastDrawFrame > src.LastDrawFrame) src = rt;
             }

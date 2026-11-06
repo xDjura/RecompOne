@@ -14,6 +14,12 @@ public static class Display
         set => GpuHle.MarginEdgeSlack = value;
     }
 
+    public static bool HoldDisplayRt
+    {
+        get => GpuHle.HoldDisplayRt;
+        set => GpuHle.HoldDisplayRt = value;
+    }
+
     public static float OutputAspect
     {
         get => GpuHle.OutputAspect;

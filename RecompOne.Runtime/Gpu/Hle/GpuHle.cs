@@ -13,6 +13,11 @@ public static class GpuHle
     // display's left edge, and the right margin likewise, independently of each other.
     public static int MarginEdgeSlack { get; set; } = -1;
 
+    // Keep presenting the display's render target even when nothing has been drawn to it lately (opt-in, off by
+    // default). Normally a target idle for a few frames gives way to VRAM (movies are written straight to VRAM),
+    // which loses the widescreen margins; a game that freezes its picture (a pause screen) can set this meanwhile.
+    public static bool HoldDisplayRt { get; set; }
+
     public static float OutputAspect { get; set; } = 4f / 3f;
 
     public static float SourceAspect { get; set; } = 4f / 3f;
