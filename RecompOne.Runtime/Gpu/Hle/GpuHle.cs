@@ -16,6 +16,8 @@ public static class GpuHle
     // Keep presenting the display's render target even when nothing has been drawn to it lately (opt-in, off by
     // default). Normally a target idle for a few frames gives way to VRAM (movies are written straight to VRAM),
     // which loses the widescreen margins; a game that freezes its picture (a pause screen) can set this meanwhile.
+    // While set, drawing over the held picture also leaves its margins alone (they are normally cleared on the
+    // first draw of each new frame).
     public static bool HoldDisplayRt { get; set; }
 
     public static float OutputAspect { get; set; } = 4f / 3f;

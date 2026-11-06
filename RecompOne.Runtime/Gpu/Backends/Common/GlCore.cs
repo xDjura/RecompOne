@@ -454,7 +454,9 @@ public sealed class GlCore : IGpuBackend
         if (_count + vertsNeeded > MaxVerts) Flush();
         CheckTextureFeedback(f);
 
-        if (target != null) ClearMargin(target);
+        // A held picture (GpuHle.HoldDisplayRt) is frozen on purpose: drawing over it (a pause plate) must not
+        // clear its margins as if a new frame had started.
+        if (target != null && !GpuHle.HoldDisplayRt) ClearMargin(target);
 
         _kDepth = useDepth;
         _kStamp = stamp;
