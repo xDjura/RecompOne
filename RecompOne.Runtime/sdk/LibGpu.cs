@@ -284,7 +284,7 @@ public static class LibGpu
     {
         var now = Interrupts.ClockMs;
         if (now - LibEtc.LastWaitMs < FlipGrace) return;
-        if (now - _autoMark < Host.FrameClock.FrameMs * 0.5) return;
+        if (!Runtime.PresentAllFlips && now - _autoMark < Host.FrameClock.FrameMs * 0.5) return;
 
         _autoMark = now;
         Runtime.PresentFrame();

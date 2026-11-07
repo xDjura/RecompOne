@@ -292,6 +292,10 @@ public static class Runtime
     // and pad updates wait for the next normal present, since their effects in RAM would be rolled back.
     public static bool PresentOnly { get; set; }
 
+    // Opt-in (default off = upstream behaviour): present every display flip, also ones closer together than half a
+    // 60 Hz frame (LibGpu.AutoPresent normally skips those). For game patches that draw frames faster than 120 fps.
+    public static bool PresentAllFlips { get; set; }
+
     public static void PresentFrame()
     {
         if (_hardResetPending)
