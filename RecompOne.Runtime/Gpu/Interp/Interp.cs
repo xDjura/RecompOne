@@ -35,6 +35,11 @@ public static class Interp
 
     public static bool VSync { get; set; }
 
+    // Opt-in (default = upstream behaviour): how far an explicitly grouped transform (InterpGroups.Push) may move
+    // in view space between two frames and still be paired with the same id. For games whose ids are exact and
+    // whose geometry is drawn at a large scale, where the default rejects pairs during fast camera motion.
+    public static float ExplicitIdReach { get; set; } = 1024f;
+
     public static int Resolve(int target, int refreshRate, bool vsync)
     {
         if (target <= 0) return 0;

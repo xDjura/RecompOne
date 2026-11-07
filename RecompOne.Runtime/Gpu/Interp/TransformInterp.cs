@@ -367,7 +367,7 @@ internal sealed class TransformInterp
         var dx = current.TX - (previous.TX + previous.Vx);
         var dy = current.TY - (previous.TY + previous.Vy);
         var dz = current.TZ - (previous.TZ + previous.Vz);
-        if (MathF.Sqrt(dx * dx + dy * dy + dz * dz) > Reach) return false;
+        if (MathF.Sqrt(dx * dx + dy * dy + dz * dz) > (current.Kind == TransformKind.Explicit ? Interp.ExplicitIdReach : Reach)) return false;
 
         var orientation =
             Row(current.R0, current.R1, current.R2, previous.R0, previous.R1, previous.R2) +
