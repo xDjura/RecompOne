@@ -21,6 +21,11 @@ public static class NativeProjection
 
     public static bool Active => Enabled && NativeGeometry.Enabled;
 
+    // Opt-in (default off = upstream behaviour): also anchor projections stored to ordinary RAM, for games that
+    // project into a shared vertex table and build the GPU packets from it later (each batch overwrites the
+    // previous one's table entries, so the by-address entries alone lose most of a frame).
+    public static bool AnchorAllStores { get; set; }
+
     public static void Reset()
     {
         Array.Clear(Fifo);
@@ -66,7 +71,7 @@ public static class NativeProjection
 
         var vertex = ignoreDepth ? Fifo[register - 12] with { IgnoreDepth = true } : Fifo[register - 12];
         NativeGeometry.Store(address, word, in vertex);
-        if (IsLocal(address)) NativeGeometry.Anchor(word, in vertex);
+        if (AnchorAllStores || IsLocal(address)) NativeGeometry.Anchor(word, in vertex);
     }
 
     private static bool IsLocal(uint address)
