@@ -287,6 +287,11 @@ public static class Runtime
         _nextPresentMs += intervalMs;
     }
     
+    // Opt-in (default off = upstream behaviour): set by a game patch around frames it draws in between the game's
+    // own frames (and then rolls back in RAM). Such a present only shows the picture: CD callbacks, memory card
+    // and pad updates wait for the next normal present, since their effects in RAM would be rolled back.
+    public static bool PresentOnly { get; set; }
+
     public static void PresentFrame()
     {
         if (_hardResetPending)
@@ -302,6 +307,7 @@ public static class Runtime
         Hle.PrimIdentity.EndFrame();
         Gte.CloseFrame();
         FrameClock.MarkFrame();
+        if (PresentOnly) return;
         Sdk.LibCd.Tick();
         if (Cpu != null && Mem != null) Sdk.LibMcrd.Tick(Cpu, Mem);
         if (Mem != null)
